@@ -12,6 +12,7 @@ savvy.accessEPay.verifyAccountButton = {
     merchant_emailChanged: 0,
     elmClassPrefix: 'payment_accessepay_',
     verifyAccount: function() {
+        console.log(jQuery(this.elmClassPrefix + 'merchant_id'));
         var _params = {
             merchant_id: $(this.elmClassPrefix + 'merchant_id').value,
             merchant_email: $(this.elmClassPrefix + 'merchant_email').value,
