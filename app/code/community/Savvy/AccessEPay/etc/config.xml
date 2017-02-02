@@ -34,9 +34,9 @@
             <accessepay_resource>
                 <class>Savvy_AccessEPay_Model_Resource</class>
                 <entities>
-                    <service>
-                        <table>sv_accessepay_service</table>
-                    </service>
+                    <transaction>
+                        <table>accessepay_transaction</table>
+                    </transaction>
                 </entities>
             </accessepay_resource>
         </models>
