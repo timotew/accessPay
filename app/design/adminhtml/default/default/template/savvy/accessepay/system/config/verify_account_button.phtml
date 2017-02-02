@@ -10,21 +10,31 @@ if (typeof savvy.accessEPay == 'undefined') {
 savvy.accessEPay.verifyAccountButton = {
     merchant_idChanged: 0,
     merchant_emailChanged: 0,
-    elmClassPrefix: 'payment_accessepay_',
+    elmClassPrefix: 'payment_acccessepay_',
     verifyAccount: function() {
-        console.log(jQuery(this.elmClassPrefix + 'merchant_id'));
+      
         var _params = {
-            merchant_id: $(this.elmClassPrefix + 'merchant_id').value,
-            merchant_email: $(this.elmClassPrefix + 'merchant_email').value,
-            merchant_id_changed: this.merchantIdChanged,
-            merchant_email_changed: this.merchantEmailChanged
+            merchant_id: $("payment_acccessepay_merchant_id").value,
+            merchant_email: $("payment_acccessepay_merchant_email").value,
+            merchant_id_changed: this.merchant_idChanged,
+            merchant_email_changed: this.merchant_emailChanged
         };
+   
         new Ajax.Request('<?php echo $this->getAjaxVerifyAccountUrl() ?>', {
             parameters: _params,
             onSuccess: function(transport) {
+
+console.log(response);
                 if (transport.responseText) {
                     var response = transport.responseText.evalJSON(true);
-                    alert(response.ResponseCode);
+                    alert(response.ResponseDescription);
+                }
+            },onComplete: function(transport) {
+
+console.log(transport);
+                if (transport.responseText) {
+                    var response = transport.responseText.evalJSON(true);
+                    alert(response.ResponseDescription);
                 }
             }
         });
@@ -32,6 +42,7 @@ savvy.accessEPay.verifyAccountButton = {
 };
 
 document.observe("dom:loaded", function() {
+
     $(savvy.accessEPay.verifyAccountButton.elmClassPrefix + 'merchant_id').observe(
         'change', function(event) {
             savvy.accessEPay.verifyAccountButton.merchant_idChanged = 1;
