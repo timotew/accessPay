@@ -27,7 +27,7 @@ class Savvy_AccessEPay_PaymentController extends Mage_Core_Controller_Front_Acti
 
         $result = array(
             'status' => 0,
-            'description' => $this->__('An error has occurred. Please, contact the store administrator.')
+            'ResponseDescription' => $this->__('An error has occurred. Please, contact the store administrator.')
         );
         $merchantInfo = $helper->getgetMerchantDetails();
 
@@ -35,7 +35,7 @@ class Savvy_AccessEPay_PaymentController extends Mage_Core_Controller_Front_Acti
 
         foreach ($merchantInfo as $key => $val) {
             if (empty($params[$key]) && $params[$key] !== 0) {
-                $result['description'] = $this->__(
+                $result['ResponseDescription'] = $this->__(
                     'Merchant ID, Merchant Email and Currency Code are required in order to verify your account'
                 );
                 $response->setBody(json_encode($result));
@@ -131,7 +131,7 @@ class Savvy_AccessEPay_PaymentController extends Mage_Core_Controller_Front_Acti
 
             if ($soapResult != '[soapfault]') {
             $response = $helper->parseXmlResponse($soapResult, 'get_status');
-                if (strpos($response['status'], 'Successful')>-1) {
+                if (strpos($response['StatusCode'], '00')>-1) {
 
                     $order->setState(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW, true, 'Payment Success.');
                     $order->save();
@@ -139,7 +139,7 @@ class Savvy_AccessEPay_PaymentController extends Mage_Core_Controller_Front_Acti
                     Mage::getSingleton('checkout/session')->unsQuoteId();
                     Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/success', array('_secure'=> false));
                 } else {
-                    $result['description'] = $helper->__('Invalid Account. If the issue persists, please contact the store administrator.');
+                    $result['ResponseDescription'] = $helper->__('Invalid Account. If the issue persists, please contact the store administrator.');
                 }
 
 

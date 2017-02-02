@@ -23,7 +23,7 @@ savvy.accessEPay.verifyAccountButton = {
             onSuccess: function(transport) {
                 if (transport.responseText) {
                     var response = transport.responseText.evalJSON(true);
-                    alert(response.StatusCode);
+                    alert(response.ResponseCode);
                 }
             }
         });

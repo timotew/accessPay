@@ -20,7 +20,7 @@ class Savvy_AccessEPay_Model_Paymentmethod extends Mage_Core_Model_Abstract
 
         $result = array(
             'status' => 0,
-            'description' => $helper->__('An error has occurred. Please, contact the store administrator.')
+            'ResponseDescription' => $helper->__('An error has occurred. Please, contact the store administrator.')
         );
 
         $soapResult = $helper->soapClient('get_status', $data);
@@ -38,11 +38,11 @@ class Savvy_AccessEPay_Model_Paymentmethod extends Mage_Core_Model_Abstract
             if (strpos($response['StatusCode'], '00')>-1) {
                 $result = array(
                     'status' => 1,
-                    'Status' => $helper->__('Valid Account'),
+                    'ResponseDescription' => $response['ResponseDescription'].$helper->__('Valid Account'),
                     'list' => null
                 );
             } else {
-                $result['Status'] = $helper->__('Invalid Account. If the issue persists, please contact the store administrator.');
+                $result['ResponseDescription'] = $helper->__('Invalid Account. If the issue persists, please contact the store administrator.');
             }
         }
 

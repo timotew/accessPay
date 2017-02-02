@@ -155,7 +155,7 @@ class Savvy_AccessEPay_Helper_Data extends Mage_Core_Helper_Abstract
 
         $result['status'] = $xmlObj->getNode('StatusCode')->asArray();
 
-        if (strpos($result['status_code'], '00')>-1) {
+        if (strpos($result['StatusCode'], '00')>-1) {
             switch ($method) {
                 case 'get_status':
                     $result['get_status'] = $xmlObj->getNode()->asArray();
