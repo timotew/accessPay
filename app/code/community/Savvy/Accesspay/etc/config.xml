@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Savvy_Accesspay>
+            <version>1.0.0</version>
+        </Savvy_Accesspay>
+    </modules>
+
+    <global>
+        <fieldsets>
+            <sales_convert_quote_payment>
+                <card_type>
+                    <to_order_payment>*</to_order_payment>
+                </card_type>
+            </sales_convert_quote_payment>
+        </fieldsets>
+
+        <helpers>
+            <accesspay>
+                <class>Savvy_Accesspay_Helper</class>
+            </accesspay>
+			
+        </helpers>
+
+        <blocks>
+            <accesspay>
+                <class>Savvy_Accesspay_Block</class>
+            </accesspay>
+        </blocks>
+
+        <models>
+            <accesspay>
+                <class>Savvy_Accesspay_Model</class>
+                <resourceModel>accesspay_resource</resourceModel>
+            </accesspay>
+            <accesspay_resource>
+                <class>Savvy_Accesspay_Model_Resource</class>
+                <entities>
+                    <transaction>
+                        <table>accesspay_transaction</table>
+                    </transaction>
+                </entities>
+            </accesspay_resource>
+        </models>
+
+        <resources>
+            <accesspay_setup>
+                <setup>
+                    <module>Savvy_Accesspay</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </accesspay_setup>
+            <accesspay_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </accesspay_write>
+            <accesspay_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </accesspay_read>
+        </resources>
+    </global>
+<admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <accesspay before="Mage_Adminhtml">Savvy_Accesspay_Adminhtml</accesspay>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <accesspay>
+                    <file>savvy/accesspay_payment.xml</file>
+                </accesspay>
+            </updates>
+        </layout>
+    </adminhtml>
+    <default>
+        <payment>
+            <accesspay>
+                <active>1</active>
+                <model>accesspay/paymentmethod</model>
+                <order_status>pending</order_status>
+                <title>Accesspay</title>
+                <allowspecific>0</allowspecific>
+                <payment_action>sale</payment_action>
+            </accesspay>
+        </payment>
+    </default>
+
+    <frontend>
+        <routers>
+            <accesspay>
+                <use>standard</use>
+                <args>
+                    <module>Savvy_Accesspay</module>
+                    <frontName>accesspay</frontName>
+                </args>
+            </accesspay>
+        </routers>
+    </frontend>
+</config>

@@ -1,0 +1,64 @@
+<?php
+/*
+ * thanks to https://gist.github.com/arosenhagen/2397824
+ */
+$order = new Mage_Sales_Model_Order();
+$session = Mage::getSingleton('checkout/session');
+$quote = $session->getQuote();
+$quote->getItemsQty();//quantity of items in cart
+$quote->getSubtotal();//sub total of items in the acrt
+$shipping = $quote->getShippingAddress();
+$allItems = $quote->getAllItems();//all items in the cart
+$postData = $this->getRequest()->getPost();
+$helper =  Mage::helper('accesspay');
+$merchantInfo = $helper->getgetMerchantDetails();
+// You can access individual variables like...
+$totalItems = Mage::getModel('checkout/cart')->getQuote()->getItemsCount(); //items count
+$totalQuantity = Mage::getModel('checkout/cart')->getQuote()->getItemsQty();//items quality
+$shippingPrice = $shipping->getShippingAmount();
+
+$purchaseTable = "<table >";
+$purchaseTable .= "<tr><th>S/N</th><th>Product</th><th>SKU</th><th>Quantity</th><th>Price</th><th>&nbsp;</th></tr>";
+$sn =0;
+foreach ($allItems as $item) {
+    $sn++;
+    $purchaseTable .= "<tr>";
+    $priceInclVat += $item->getRowTotalInclTax();
+    $purchaseTable .= "<tr>";
+    $purchaseTable .= "<td>{$sn}</td>";
+    $purchaseTable .= "<td>{$item->getName()}</td>";
+    $purchaseTable .= "<td>{$item->getSku()}</td>";
+    $purchaseTable .= "<td>{$item->getQty()}</td>";
+    $purchaseTable .= "<td>{$item->getPrice()}</td>";
+    $purchaseTable .= "</tr>";
+
+}
+$purchaseTable .= "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>Sub Total + VAT</th><th>{$priceInclVat}</th></tr>";
+$purchaseTable .= "<tr><th>&nbsp;</th><th>Shipping</th><th>&nbsp;</th><th>&nbsp;</th><th>Shipping</th><th>{$shippingPrice}</th></tr>";
+$purchaseTable .= "<tr><th>&nbsp;</th><th>Shipping</th><th>&nbsp;</th><th>&nbsp;</th><th>TOTAL</th><th>{$order->getGrandTotal()}</th></tr>";
+$purchaseTable .= "</table>";
+
+//// sub total price of Items in the cart including tax but no shipping
+$grandTotal = Mage::helper('checkout')->formatPrice($quote->getGrandTotal());//grand total of items in the cart
+$_customer = Mage::getSingleton('customer/session')->isLoggedIn();//check if customer is logged in
+
+$order->loadByIncrementId($orderId);
+$orderId = $session->getLastRealOrderId();
+$currency_code =$this->getStore()->getCurrentCurrencyCode();
+$card_type = $postData['card_type'];
+$merchantId = $merchantInfo['merchant_id'];
+$merchantEmail = $merchantInfo['merchant_email'];
+?>
+<h2><?php echo $this->__('Access ePay') ?></h2>
+<p>Access Bank  Payment Gateway :-)</p>
+<?php echo $purchaseTable;  ?>
+<form name="accesspay" method="post" target="_top" action="<?php echo Mage::helper('savvy')->getPaymentGatewayUrl(); ?>">
+    <input type="hidden" name="mercId" value="<?php echo $merchantId; ?>" />
+    <input type="hidden" name="orderId" value="<?php echo $orderId; ?>" />
+    <input type="hidden" name="amt" value="<?php echo $grandTotal; ?>" />
+    <input type="hidden" name="currCode" value="<?php echo $currency_code; ?>" />
+    <input type="hidden" name="prod" value="<?php echo $this->__('Products'); ?>" />
+    <input type="hidden" name="email" value="<?php echo $merchantEmail; ?>"/>
+    <input type="hidden" name="gatekey" value="<?php echo $card_type; ?>"/>
+    <input type="submit" name="submit" value="<?php echo $this->__('Make Payment') ?>" />
+</form>

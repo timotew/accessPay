@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Savvy_Accesspay>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Savvy_Accesspay>
+    </modules>
+</config>
