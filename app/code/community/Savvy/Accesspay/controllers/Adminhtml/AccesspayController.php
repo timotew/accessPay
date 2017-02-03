@@ -33,7 +33,7 @@ class Savvy_Accesspay_Adminhtml_AccesspayController extends Mage_Adminhtml_Contr
             'status' => 0,
             'ResponseDescription' => $this->__('An error has occurred. Please, contact the store administrator.')
         );
-        $merchantInfo = $helper->getgetMerchantDetails();
+        $merchantInfo = $helper->getMerchantDetails();
 
 
 
@@ -58,7 +58,7 @@ class Savvy_Accesspay_Adminhtml_AccesspayController extends Mage_Adminhtml_Contr
             $params['merchant_email'] = Mage::helper('core')->decrypt($params['merchant_email']);
         }
 
-        $result = Mage::getModel('accespay/status')->verifyAccount($params);
+        $result = Mage::getModel('accesspay/status')->verifyAccount($params);
 
         $response->setBody(json_encode($result));
     }

@@ -1,6 +1,6 @@
 <?php
 
-class Savvy_Accesspay_Model_Paymentmethod extends Mage_Core_Model_Abstract
+class Savvy_Accesspay_Model_Status extends Mage_Core_Model_Abstract
 {
 
 
@@ -33,9 +33,10 @@ class Savvy_Accesspay_Model_Paymentmethod extends Mage_Core_Model_Abstract
         $helper->debug($debugLog);
 
         if ($soapResult != '[soapfault]') {
-            $response = $helper->parseXmlResponse($soapResult, 'get_status');
 
-            if (strpos($response['StatusCode'], '00')>-1) {
+            // $response = $helper->parseXmlResponse($soapResult, 'get_status');
+
+            if (strpos($soapResult, 'E00&[No Transaction Record]')>-1) {
                 $result = array(
                     'status' => 1,
                     'ResponseDescription' => $response['ResponseDescription'].$helper->__('Valid Account'),

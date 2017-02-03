@@ -14,11 +14,12 @@ class Savvy_Accesspay_Helper_Data extends Mage_Core_Helper_Abstract
      * @var string
      */
     protected $_emailFailMessage = 'Could not send email';
+    protected $_soap1_2 = false;
 
     protected $_getwayURL = "https://cipg.accessbankplc.com/MerchantServices/MakePayment.aspx";
 
     const ACCESSPAY_SETTINGS_SYSTEM_PATH        = 'payment/accesspay/';
-	const PAYMENT_ACCESSPAY_SYSTEM_PATH          ='payment/saccesspay';
+    const PAYMENT_ACCESSPAY_SYSTEM_PATH          ='payment/saccesspay';
 
     function getPaymentGatewayUrl()
     {
@@ -45,7 +46,8 @@ class Savvy_Accesspay_Helper_Data extends Mage_Core_Helper_Abstract
         $result = null;
 
         if (!isset($scOptions['soap_version'])) {
-            $scOptions['soap_version'] = SOAP_1_2;
+
+            $scOptions['soap_version'] = ($this->_soap1_2) ? SOAP_1_2 : SOAP_1_1;
         }
 
         if (!isset($scOptions['trace'])) {
@@ -60,7 +62,10 @@ class Savvy_Accesspay_Helper_Data extends Mage_Core_Helper_Abstract
             $soapClient = new SoapClient($wsdl, $scOptions);
 
             if ($actionHeader = $this->_getSoapHeader($method)) {
-                $soapClient->__setSoapHeaders($actionHeader);
+
+                if($this->_soap1_2){
+                    $soapClient->__setSoapHeaders($actionHeader);
+                }
             }
 
             $result = $this->_soapClientCall($method, $soapClient, $callParams);
@@ -83,6 +88,7 @@ class Savvy_Accesspay_Helper_Data extends Mage_Core_Helper_Abstract
         switch ($method) {
             case 'get_status':
                 $result = $soapClient->GetTransactionStatus($callParams)->GetTransactionStatusResult;
+
                 break;
             case 'get_details':
                 $result = $soapClient->GetTransactionDetails($callParams)->GetTransactionDetailsResult;
@@ -154,6 +160,7 @@ class Savvy_Accesspay_Helper_Data extends Mage_Core_Helper_Abstract
             return $result;
         }
 
+
         $result['status'] = $xmlObj->getNode('StatusCode')->asArray();
 
         if (strpos($result['StatusCode'], '00')>-1) {
@@ -183,7 +190,7 @@ class Savvy_Accesspay_Helper_Data extends Mage_Core_Helper_Abstract
     }
     public function debug($params, $file = '')
     {
-        if ($this->getConfigData('debug', 'payment_accesspay')) {
+        if ($this->getConfigData('debug', 'savvy_accesspay')) {
             $this->log($params, '', $file);
         }
     }
