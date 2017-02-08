@@ -88,12 +88,17 @@
         <payment>
             <accesspay>
                 <active>1</active>
-                <model>accesspay/paymentmethod</model>
+                <model>accesspay/accesspay</model>
                 <order_status>pending</order_status>
                 <title>Accesspay</title>
                 <allowspecific>0</allowspecific>
                 <payment_action>sale</payment_action>
             </accesspay>
+        </payment>
+        <payment>
+            <telephoneorder>
+                <model>accesspay/accesspay</model>
+            </telephoneorder>
         </payment>
     </default>
 

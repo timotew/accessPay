@@ -1,6 +1,12 @@
 <?php
-class Savvy_Accesspay_Model_Paymentmethod extends Mage_Payment_Model_Method_Abstract {
+class Savvy_Accesspay_Model_Accesspay extends Mage_Payment_Model_Method_Abstract {
     protected $_code  = 'accesspay';
+
+    protected $_isInitializeNeeded = true;
+
+    protected $_canUseInternal = true;
+
+    protected $_canUseForMultishipping = true;
     protected $_formBlockType = 'accesspay/form_accesspay';
     protected $_infoBlockType = 'accesspay/info_accesspay';
 
