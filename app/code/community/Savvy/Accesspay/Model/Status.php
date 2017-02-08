@@ -13,7 +13,7 @@ class Savvy_Accesspay_Model_Status extends Mage_Core_Model_Abstract
 
         $data = array(
             'merchantID' => $params['merchant_id'],
-            'currencyCode' => "NGN",
+            'currencyCode' => $params['merchant_id'],
             'amount' => "4000",
             'orderID' => "3242563"
         );

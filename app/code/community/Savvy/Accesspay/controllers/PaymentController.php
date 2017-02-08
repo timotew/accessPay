@@ -118,7 +118,11 @@ class Savvy_Accesspay_PaymentController extends Mage_Core_Controller_Front_Actio
             $orderId = $this->getRequest()->get("OrderID");
             $transactionRef = $this->getRequest()->get("TransactionReference");
             $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-            $param = array("OrderID"=>$orderId,"merchantID"=>$merchantId,
+
+
+            $param = array(
+                "orderID"=>$orderId,
+                "merchantID"=>$merchantId,
                 "currencyCode"=>$this->getStore()->getCurrentCurrencyCode(),
                 "amount"=>$order->getGrandTotal());
 
@@ -130,18 +134,18 @@ class Savvy_Accesspay_PaymentController extends Mage_Core_Controller_Front_Actio
             $helper->debug($debugLog);
 
             if ($soapResult != '[soapfault]') {
-            $response = $helper->parseXmlResponse($soapResult, 'get_status');
-                if (strpos($response['StatusCode'], '00')>-1) {
+
+            //$response = $helper->parseXmlResponse($soapResult, 'get_status');
+                if (strpos($soapResult, 'E00&[No Transaction Record]')<0)
+                {
 
                     $order->setState(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW, true, 'Payment Success.');
                     $order->save();
-
                     Mage::getSingleton('checkout/session')->unsQuoteId();
                     Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/success', array('_secure'=> false));
                 } else {
                     $result['ResponseDescription'] = $helper->__('Invalid Account. If the issue persists, please contact the store administrator.');
                 }
-
 
             }else{
 

@@ -33,6 +33,7 @@ class Savvy_Accesspay_Adminhtml_AccesspayController extends Mage_Adminhtml_Contr
             'status' => 0,
             'ResponseDescription' => $this->__('An error has occurred. Please, contact the store administrator.')
         );
+
         $merchantInfo = $helper->getMerchantDetails();
 
 
