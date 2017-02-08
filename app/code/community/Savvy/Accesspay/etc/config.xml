@@ -96,9 +96,9 @@
             </accesspay>
         </savvy>
         <payment>
-            <telephoneorder>
+            <accesspay>
                 <model>accesspay/accesspay</model>
-            </telephoneorder>
+            </accesspay>
         </payment>
     </default>
 
