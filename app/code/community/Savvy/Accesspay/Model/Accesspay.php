@@ -82,7 +82,7 @@ class Savvy_Accesspay_Model_Accesspay extends Mage_Payment_Model_Method_Abstract
         $quoteId = $sessionCheckout->getQuoteId();
         //The quoteId will be removed from the session once the order is placed.
         //If you need it, save it to the session yourself.
-        $sessionCheckout->setData('mockpayQuoteId',$quoteId);
+        $sessionCheckout->setData('accesspayQuoteId',$quoteId);
 
         $quote = Mage::getModel("sales/quote")->load($quoteId);
         $grandTotal = $quote->getData('grand_total');
@@ -113,10 +113,10 @@ class Savvy_Accesspay_Model_Accesspay extends Mage_Payment_Model_Method_Abstract
             $apiDesc .= ' + S&H';
         }
         //Build urls back to our modules controller actions as required by the api.
-        $oUrl = Mage::getModel('core/url');
-        $apiHrefSuccess = $oUrl->getUrl("accesspay/accesspay/success");
-        $apiHrefFailure = $oUrl->getUrl("mockpay/accesspay/failure");
-        $apiHrefCancel = $oUrl->getUrl("accesspay/accesspay/cancel");
+       // $oUrl = Mage::getModel('core/url');
+        //$apiHrefSuccess = $oUrl->getUrl("accesspay/accesspay/success");
+        //$apiHrefFailure = $oUrl->getUrl("accesspay/accesspay/failure");
+        //$apiHrefCancel = $oUrl->getUrl("accesspay/accesspay/cancel");
 
         return $this;
     }
