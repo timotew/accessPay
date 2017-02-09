@@ -3,7 +3,7 @@
     <sections>
         <payment>
             <groups>
-                <acccesspay translate="label" module="accesspay">
+                <accesspay translate="label" module="accesspay">
                     <label>Accesspay</label>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -115,7 +115,7 @@
                             <sort_order>9</sort_order>
                         </specificcountry>
                     </fields>
-                </acccesspay>
+                </accesspay>
             </groups>
         </payment>
     </sections>

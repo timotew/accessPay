@@ -113,7 +113,7 @@ class Savvy_Accesspay_PaymentController extends Mage_Core_Controller_Front_Actio
         if ($this->getRequest()->get("TransactionReference")&& $this->getRequest()->get("OrderID"))
         {
             $helper =  Mage::helper('accesspay');
-            $merchantInfo = $helper->getgetMerchantDetails();
+            $merchantInfo = $helper->getMerchantDetails();
             $merchantId = Mage::helper('core')->decrypt($merchantInfo['merchant_id']);
             $orderId = $this->getRequest()->get("OrderID");
             $transactionRef = $this->getRequest()->get("TransactionReference");

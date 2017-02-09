@@ -46,6 +46,7 @@ class Savvy_Accesspay_Model_Accesspay extends Mage_Payment_Model_Method_Abstract
 
     public function getOrderPlaceRedirectUrl()
     {
+
         return Mage::getUrl('accesspay/payment/redirect', array('_secure' => false));
     }
 }

@@ -19,7 +19,7 @@ class Savvy_Accesspay_Helper_Data extends Mage_Core_Helper_Abstract
     protected $_getwayURL = "https://cipg.accessbankplc.com/MerchantServices/MakePayment.aspx";
 
     const ACCESSPAY_SETTINGS_SYSTEM_PATH        = 'payment/accesspay/';
-    const PAYMENT_ACCESSPAY_SYSTEM_PATH          ='payment/saccesspay';
+    const PAYMENT_ACCESSPAY_SYSTEM_PATH          ='payment/accesspay';
 
     function getPaymentGatewayUrl()
     {
@@ -181,7 +181,7 @@ class Savvy_Accesspay_Helper_Data extends Mage_Core_Helper_Abstract
 
         switch ($type) {
 
-            case 'payment_acccessepay':
+            case 'payment_accesspay':
                 $path = self::ACCESSPAY_SETTINGS_SYSTEM_PATH;
                 break;
         }

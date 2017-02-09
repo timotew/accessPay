@@ -11,7 +11,7 @@ $shipping = $quote->getShippingAddress();
 $allItems = $quote->getAllItems();//all items in the cart
 $postData = $this->getRequest()->getPost();
 $helper =  Mage::helper('accesspay');
-$merchantInfo = $helper->getgetMerchantDetails();
+$merchantInfo = $helper->getMerchantDetails();
 // You can access individual variables like...
 $totalItems = Mage::getModel('checkout/cart')->getQuote()->getItemsCount(); //items count
 $totalQuantity = Mage::getModel('checkout/cart')->getQuote()->getItemsQty();//items quality
@@ -39,26 +39,25 @@ $purchaseTable .= "<tr><th>&nbsp;</th><th>Shipping</th><th>&nbsp;</th><th>&nbsp;
 $purchaseTable .= "</table>";
 
 //// sub total price of Items in the cart including tax but no shipping
-$grandTotal = Mage::helper('checkout')->formatPrice($quote->getGrandTotal());//grand total of items in the cart
-$_customer = Mage::getSingleton('customer/session')->isLoggedIn();//check if customer is logged in
-
-$order->loadByIncrementId($orderId);
+$grandTotal = $quote->getGrandTotal();//grand total of items in the cart
+$_customer = Mage::getSingleton('customer/session');//check if customer is logged in
+$data = $order->loadByIncrementId($orderId);
 $orderId = $session->getLastRealOrderId();
-$currency_code =$this->getStore()->getCurrentCurrencyCode();
+$currency_code =$merchantInfo['currency_code'];
 $card_type = $postData['card_type'];
 $merchantId = $merchantInfo['merchant_id'];
-$merchantEmail = $merchantInfo['merchant_email'];
+$customerEmail = $quote->getCustomerEmail();
 ?>
 <h2><?php echo $this->__('Access ePay') ?></h2>
 <p>Access Bank  Payment Gateway :-)</p>
 <?php echo $purchaseTable;  ?>
-<form name="accesspay" method="post" target="_top" action="<?php echo Mage::helper('savvy')->getPaymentGatewayUrl(); ?>">
+<form name="accesspay" method="post" target="_top" action="<?php echo Mage::helper('accesspay')->getPaymentGatewayUrl(); ?>">
     <input type="hidden" name="mercId" value="<?php echo $merchantId; ?>" />
     <input type="hidden" name="orderId" value="<?php echo $orderId; ?>" />
     <input type="hidden" name="amt" value="<?php echo $grandTotal; ?>" />
     <input type="hidden" name="currCode" value="<?php echo $currency_code; ?>" />
     <input type="hidden" name="prod" value="<?php echo $this->__('Products'); ?>" />
-    <input type="hidden" name="email" value="<?php echo $merchantEmail; ?>"/>
+    <input type="hidden" name="email" value="<?php echo customerEmail; ?>"/>
     <input type="hidden" name="gatekey" value="<?php echo $card_type; ?>"/>
     <input type="submit" name="submit" value="<?php echo $this->__('Make Payment') ?>" />
 </form>
