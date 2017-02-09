@@ -85,7 +85,7 @@
         </layout>
     </adminhtml>
     <default>
-        <savvy>
+        <payment>
             <accesspay>
                 <active>1</active>
                 <model>accesspay/accesspay</model>
@@ -94,12 +94,8 @@
                 <allowspecific>0</allowspecific>
                 <payment_action>sale</payment_action>
             </accesspay>
-        </savvy>
-        <payment>
-            <accesspay>
-                <model>accesspay/accesspay</model>
-            </accesspay>
         </payment>
+       
     </default>
 
     <frontend>
