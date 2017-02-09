@@ -63,6 +63,16 @@
                 </connection>
             </accesspay_read>
         </resources>
+        <events>
+            <checkout_type_onepage_save_order_after>
+                <observers>
+                    <savvy_accesspay_observer>
+                        <class>Savvy_Accesspay_Model_Observer</class>
+                        <method>saveOrderQuoteToSession</method>
+                    </savvy_accesspay_observer>
+                </observers>
+            </checkout_type_onepage_save_order_after>
+        </events>
     </global>
 <admin>
         <routers>

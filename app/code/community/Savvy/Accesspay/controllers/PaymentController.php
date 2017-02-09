@@ -18,6 +18,64 @@ class Savvy_Accesspay_PaymentController extends Mage_Core_Controller_Front_Actio
          * TODO: Remove this the gateway action is performed by access getway URL
          */
     }
+
+    public function cancelAction(){
+        Mage::Log('Called ' . __METHOD__);
+        $this->_cancelAction();
+    }
+
+    /**
+     * When a customer cancel payment from api
+     */
+    protected function _cancelAction()
+    {
+        Mage::Log('Called ' . __METHOD__);
+        if(!$this->_isValidToken()){
+            Mage::Log('Token is invalid.');
+            $this->_redirect('checkout/cart');
+        }
+        //TODO: add Api specific values. Copied form paypal standard.
+        $session = Mage::getSingleton('checkout/session');
+        $session->setQuoteId($this->_getApiQuoteId());
+        /* @var $quote Mage_Sales_Model_Quote */
+        $quote = $session->getQuote();
+        $quote->setIsActive(false)->save();
+        $quote->delete();
+
+        $orderId = $this->_getApiOrderId();
+        Mage::Log('Canceling order ' . $orderId);
+        if ($orderId) {
+            $order = Mage::getSingleton('sales/order');
+            $order->load($orderId);
+            if ($order->getId()) {
+                $state = $order->getState();
+                if($state == Mage_Sales_Model_Order::STATE_PENDING_PAYMENT){
+                    $order->cancel()->save();
+                    Mage::getSingleton('core/session')->addNotice('Your order has been canceled.');
+                }
+            }
+        }
+        $this->_redirect('checkout/cart');
+    }
+
+    /**
+     * Builds invoice for order. @see moneybookers module.
+     */
+    protected function _createInvoice($orderObj)
+    {
+        if (!$orderObj->canInvoice()) {
+            return false;
+        }
+        $invoice = $orderObj->prepareInvoice();
+        $invoice->register();
+        if($invoice->canCapture()){
+            $invoice->capture();
+        }
+        $invoice->save();
+        $orderObj->addRelatedObject($invoice);
+        return $invoice;
+    }
+
     public function verifyAccountAction()
     {
         $params =  $this->getRequest()->getPost();
