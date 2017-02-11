@@ -158,7 +158,7 @@ class Savvy_Accesspay_PaymentController extends Mage_Core_Controller_Front_Actio
  */
 
         $this->loadLayout();
-        $block = $this->getLayout()->createBlock('Mage_Core_Block_Template','savvy',array('template' => 'accesspay/redirect.phtml'));
+        $block = $this->getLayout()->createBlock('Mage_Core_Block_Template','accesspay',array('template' => 'accesspay/redirect.phtml'));
         $this->getLayout()->getBlock('content')->append($block);
         $this->renderLayout();
     }
