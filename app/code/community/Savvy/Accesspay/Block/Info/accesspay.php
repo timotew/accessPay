@@ -2,6 +2,11 @@
 
 class Savvy_Accesspay_Block_Info_Accesspay extends Mage_Payment_Block_Info
 {
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setTemplate('accesspay/info/accesspay.phtml');
+    }
     protected function _prepareSpecificInformation($transport = null)
     {
         if (null !== $this->_paymentSpecificInformation)
